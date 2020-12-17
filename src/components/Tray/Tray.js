@@ -44,7 +44,7 @@ export default function Tray(props) {
   const [isCameraMuted, setCameraMuted] = useState(false);
   const [isMicMuted, setMicMuted] = useState(false);
   const [isSharingScreen, setSharingScreen] = useState(false);
-  const [displayChat, setChatDisplay] = useState(false);
+  const [displayChat, setChatDisplay] = useState(true);
   const [highlightedChat, setChatHighlight] = useState(false);
 
   function toggleCamera() {
@@ -63,13 +63,6 @@ export default function Tray(props) {
 
   function leaveCall() {
     props.onClickLeaveCall && props.onClickLeaveCall();
-  }
-
-  function toggleChat() {
-    setChatDisplay(!displayChat);
-    if (highlightedChat) {
-      setChatHighlight(!highlightedChat);
-    }
   }
 
   function handleNewChat() {
@@ -127,20 +120,7 @@ export default function Tray(props) {
           onClick={toggleSharingScreen}
         />
       )}
-      <TrayButton
-        type={TYPE_CHAT}
-        disabled={props.disabled}
-        highlighted={highlightedChat}
-        onClick={toggleChat}
-      />
       <Chat onClickDisplay={displayChat} notification={handleNewChat} />
-      <TrayButton
-        type={TYPE_LEAVE}
-        disabled={props.disabled}
-        newButtonGroup={true}
-        highlighted={true}
-        onClick={leaveCall}
-      />
     </div>
   );
 }

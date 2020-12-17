@@ -16,7 +16,7 @@
   "scripts": {
     "dev": "PORT=3002 react-scripts start",
     "build": "react-scripts build",
-    "netlify-build": "sed -i s/DAILY_API_KEY_PLACEHOLDER/${DAILY_API_KEY}/g netlify.toml && npm run build",
+    "deploy": "react-scripts build && cd build && cp index.html 200.html && surge . even-library.surge.sh",
     "start": "PORT=3002 serve build",
     "eject": "react-scripts eject"
   },
