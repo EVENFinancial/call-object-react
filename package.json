@@ -22,7 +22,7 @@
   "scripts": {
     "dev": "PORT=3002 craco start",
     "build": "craco build",
-    "deploy": "craco build && cd build && cp index.html 200.html && surge . even-library.surge.sh",
+    "deploy": "craco build && cd build && cp index.html 200.html && surge . even-library-test.surge.sh",
     "start": "PORT=3002 serve build",
     "eject": "react-scripts eject"
   },

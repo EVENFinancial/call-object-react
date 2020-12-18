@@ -182,15 +182,5 @@ export default function Call(props) {
         />
       )}
     </div>
-    // <div className="call">
-    //   <div className="bg"></div>
-    //   <div className="small-tiles">{smallTiles}</div>
-    //   <div className="large-tiles">
-    //     {
-    //       !message
-    //         ? largeTiles
-    //         : null /* Avoid showing large tiles to make room for the message */
-    //     }
-    //   </div>
   );
 }

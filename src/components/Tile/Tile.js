@@ -72,7 +72,7 @@ export default function Tile(props) {
         {getAudioComponent()}
       </div>
       <div className="space-y-2">
-        <div className="bg-white mt-3 text-xs font-medium lg:text-sm">
+        <div className="mt-3 text-xs font-medium lg:text-sm">
           <h3>{props.userName}</h3>
         </div>
       </div>

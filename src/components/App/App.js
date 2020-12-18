@@ -64,7 +64,6 @@ export default function App() {
     setRoomUrl(url);
     setCallObject(newCallObject);
     setAppState(STATE_JOINING);
-    debugger;
     newCallObject.join({ url, userName: userName || null });
   }, []);
 

@@ -8,6 +8,10 @@
   border-radius: 4px;
 }
 
+.messages {
+  height: calc(100% - 50px);
+  overflow-y: scroll;
+}
 .messageList {
   padding: 10px;
 }
@@ -16,7 +20,9 @@
   position: absolute;
   bottom: 0px;
   width: 200px;
-  height: 25px;
+  height: 45px;
+  border-top: 1px solid grey;
+  padding: 10px;
 }
 
 .send-chat-button {
@@ -24,7 +30,10 @@
   bottom: 0px;
   right: 0px;
   width: 50px;
-  height: 31px;
+  border-top: 1px grey solid;
+  border-left: 1px solid grey;
+
+  height: 45px;
   background-color: #f2f2f2;
   font-weight: bold;
 }

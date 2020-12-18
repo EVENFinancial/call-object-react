@@ -100,35 +100,37 @@ export default function Tray(props) {
   }, [callObject]);
 
   return (
-    <footer className="tray">
-      <TrayButton
-        type={TYPE_MUTE_CAMERA}
-        disabled={props.disabled}
-        highlighted={isCameraMuted}
-        onClick={toggleCamera}
-      />
-      <TrayButton
-        type={TYPE_MUTE_MIC}
-        disabled={props.disabled}
-        highlighted={isMicMuted}
-        onClick={toggleMic}
-      />
-      {DailyIframe.supportedBrowser().supportsScreenShare && (
+    <div>
+      <div className="tray">
         <TrayButton
-          type={TYPE_SCREEN}
+          type={TYPE_MUTE_CAMERA}
           disabled={props.disabled}
-          highlighted={isSharingScreen}
-          onClick={toggleSharingScreen}
+          highlighted={isCameraMuted}
+          onClick={toggleCamera}
         />
-      )}
-      <button
-        disabled={props.disabled}
-        highlighted={setMusicHighlight}
-        onClick={toggleMusicMute}
-      >
-        {!highlightedMusic ? 'Mute Music' : 'Unmute Music'}
-      </button>
+        <TrayButton
+          type={TYPE_MUTE_MIC}
+          disabled={props.disabled}
+          highlighted={isMicMuted}
+          onClick={toggleMic}
+        />
+        {DailyIframe.supportedBrowser().supportsScreenShare && (
+          <TrayButton
+            type={TYPE_SCREEN}
+            disabled={props.disabled}
+            highlighted={isSharingScreen}
+            onClick={toggleSharingScreen}
+          />
+        )}
+        <button
+          disabled={props.disabled}
+          highlighted={setMusicHighlight}
+          onClick={toggleMusicMute}
+        >
+          {!highlightedMusic ? 'Mute Music' : 'Unmute Music'}
+        </button>
+      </div>
       <Chat onClickDisplay={displayChat} />
-    </footer>
+    </div>
   );
 }
