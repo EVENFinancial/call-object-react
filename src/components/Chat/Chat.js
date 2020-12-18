@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import CallObjectContext from '../../CallObjectContext';
 import './Chat.css';
+import '../../index.css';
 
 export default function Chat(props) {
   const callObject = useContext(CallObjectContext);
@@ -62,7 +63,7 @@ export default function Chat(props) {
   useEffect(() => {}, [chatHistory]);
 
   return (
-    <div className="chat">
+    <div className="chat border border-dotted border-black">
       {chatHistory.map((entry, index) => (
         <div key={`entry-${index}`} className="messageList">
           <b>{entry.sender}</b>: {entry.message}

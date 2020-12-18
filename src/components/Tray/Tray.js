@@ -100,7 +100,7 @@ export default function Tray(props) {
   }, [callObject]);
 
   return (
-    <div className="tray">
+    <footer className="tray">
       <TrayButton
         type={TYPE_MUTE_CAMERA}
         disabled={props.disabled}
@@ -129,6 +129,6 @@ export default function Tray(props) {
         {!highlightedMusic ? 'Mute Music' : 'Unmute Music'}
       </button>
       <Chat onClickDisplay={displayChat} />
-    </div>
+    </footer>
   );
 }

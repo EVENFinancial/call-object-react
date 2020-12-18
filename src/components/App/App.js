@@ -4,9 +4,11 @@ import StartButton from '../StartButton/StartButton';
 import YouTube from 'react-youtube';
 import api from '../../api';
 import './App.css';
+import '../../index.css';
+
 import Tray from '../Tray/Tray';
 import CallObjectContext from '../../CallObjectContext';
-import { roomUrlFromPageUrl, pageUrlFromRoomUrl } from '../../urlUtils';
+import { pageUrlFromRoomUrl } from '../../urlUtils';
 import DailyIframe from '@daily-co/daily-js';
 import { logDailyEvent } from '../../logUtils';
 
@@ -21,9 +23,13 @@ const MUSIC_ROOM = 'https://evenfinancial.daily.co/TU6dcaWq6huQeX7uXIy0';
 export default function App() {
   const [appState, setAppState] = useState(STATE_IDLE);
   const [player, setPlayer] = useState(null);
-  const [music, setMusic] = useState(true);
   const [roomUrl, setRoomUrl] = useState(null);
   const [callObject, setCallObject] = useState(null);
+  const [userName, setUserName] = useState('');
+
+  const handleUserNameChange = (event) => {
+    setUserName(event.target.value);
+  };
   /**
    * Creates a new call room.
    */
@@ -53,12 +59,13 @@ export default function App() {
    * be done with the call object for a while and you're no longer listening to its
    * events.
    */
-  const startJoiningCall = useCallback((url) => {
+  const startJoiningCall = useCallback((url, userName) => {
     const newCallObject = DailyIframe.createCallObject();
     setRoomUrl(url);
     setCallObject(newCallObject);
     setAppState(STATE_JOINING);
-    newCallObject.join({ url });
+    debugger;
+    newCallObject.join({ url, userName: userName || null });
   }, []);
 
   /**
@@ -83,10 +90,10 @@ export default function App() {
    * If a room's already specified in the page's URL when the component mounts,
    * join the room.
    */
-  useEffect(() => {
-    const url = roomUrlFromPageUrl();
-    url && startJoiningCall(url);
-  }, [startJoiningCall]);
+  // useEffect(() => {
+  //   const url = roomUrlFromPageUrl();
+  //   url && startJoiningCall(url);
+  // }, [startJoiningCall]);
 
   /**
    * Update the page's URL to reflect the active call when roomUrl changes.
@@ -222,29 +229,45 @@ export default function App() {
     width: '2',
   };
   return (
-    <div className="app">
-      <YouTube videoId="5qap5aO4i9A" opts={opts} onReady={onReady} />
-      {showCall ? (
-        // NOTE: for an app this size, it's not obvious that using a Context
-        // is the best choice. But for larger apps with deeply-nested components
-        // that want to access call object state and bind event listeners to the
-        // call object, this can be a helpful pattern.
-        <CallObjectContext.Provider value={callObject}>
-          <Call roomUrl={roomUrl} />
-          <Tray
-            player={player}
-            musicMuted={false}
-            disabled={!enableCallButtons}
-          />
-        </CallObjectContext.Provider>
-      ) : (
-        <StartButton
-          disabled={!enableStartButton}
-          onClick={() => {
-            createCall().then((url) => startJoiningCall(url));
-          }}
-        />
-      )}
+    <div className="app pt-10">
+      <div className="container mx-auto">
+        <YouTube videoId="5qap5aO4i9A" opts={opts} onReady={onReady} />
+        {showCall ? (
+          // NOTE: for an app this size, it's not obvious that using a Context
+          // is the best choice. But for larger apps with deeply-nested components
+          // that want to access call object state and bind event listeners to the
+          // call object, this can be a helpful pattern.
+          <CallObjectContext.Provider value={callObject}>
+            <Call roomUrl={roomUrl} userName={userName} />
+            <Tray
+              player={player}
+              musicMuted={false}
+              disabled={!enableCallButtons}
+            />
+          </CallObjectContext.Provider>
+        ) : (
+          <div className="bg-white w-1/2 mx-auto my-10  text-center overflow-hidden shadow rounded-lg">
+            <div className="px-4 py-5 sm:p-6">
+              <div>
+                <div className="mt-1 text-center">
+                  <input
+                    placeholder="What is your name?"
+                    className="border border-solid border-4 border-light-blue p-2 rounded focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent "
+                    value={userName}
+                    onChange={handleUserNameChange}
+                  />
+                </div>
+              </div>
+              <StartButton
+                disabled={!enableStartButton || !userName.length}
+                onClick={() => {
+                  createCall().then((url) => startJoiningCall(url, userName));
+                }}
+              />
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

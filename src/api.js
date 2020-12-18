@@ -1,5 +1,3 @@
-const newRoomEndpoint = `${window.location.origin}/api/rooms`;
-
 /**
  * Create a short-lived room for demo purposes.
  *

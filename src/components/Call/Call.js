@@ -17,7 +17,7 @@ import {
 } from './callState';
 import { logDailyEvent } from '../../logUtils';
 
-export default function Call() {
+export default function Call(props) {
   const callObject = useContext(CallObjectContext);
   const [callState, dispatch] = useReducer(callReducer, initialCallState);
 
@@ -141,6 +141,7 @@ export default function Call() {
           videoTrack={callItem.videoTrack}
           audioTrack={callItem.audioTrack}
           isLocalPerson={isLocal(id)}
+          userName={isLocal(id) ? 'You' : callItem.userName || 'Someone'}
           isLarge={isLarge}
           isLoading={callItem.isLoading}
           onClick={
@@ -164,16 +165,15 @@ export default function Call() {
   const [largeTiles, smallTiles] = getTiles();
   const message = getMessage(callState);
   return (
-    <div className="call">
-      <div className="small-tiles">{smallTiles}</div>
-      <div className="large-tiles">
-        {
-          !message
-            ? largeTiles
-            : null /* Avoid showing large tiles to make room for the message */
-        }
+    <div>
+      <div className="max-w-7xl mx-auto py-12 px-4 text-center sm:px-6 lg:px-8 lg:py-24">
+        <div className="space-y-8 sm:space-y-12">
+          <ul className="mx-auto grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-4 md:gap-x-6 lg:max-w-5xl lg:gap-x-8 lg:gap-y-12 xl:grid-cols-6">
+            {smallTiles}
+          </ul>
+        </div>
+        <div className="space-y-8 sm:space-y-12">{largeTiles}</div>
       </div>
-
       {message && (
         <CallMessage
           header={message.header}
@@ -182,5 +182,15 @@ export default function Call() {
         />
       )}
     </div>
+    // <div className="call">
+    //   <div className="bg"></div>
+    //   <div className="small-tiles">{smallTiles}</div>
+    //   <div className="large-tiles">
+    //     {
+    //       !message
+    //         ? largeTiles
+    //         : null /* Avoid showing large tiles to make room for the message */
+    //     }
+    //   </div>
   );
 }
