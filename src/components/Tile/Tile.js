@@ -36,7 +36,15 @@ export default function Tile(props) {
 
   function getVideoComponent() {
     return (
-      props.videoTrack && <video autoPlay muted playsInline ref={videoEl} />
+      props.videoTrack && (
+        <video
+          className="flex-shrink-0 mx-auto"
+          autoPlay
+          muted
+          playsInline
+          ref={videoEl}
+        />
+      )
     );
   }
 
@@ -48,18 +56,26 @@ export default function Tile(props) {
   }
 
   function getClassNames() {
-    let classNames = 'tile';
+    let classNames =
+      'tile border-4 border-solid border-light-blue-500 bg-black rounded-full';
     classNames += props.isLarge ? ' large' : ' small';
     props.isLocalPerson && (classNames += ' local');
     return classNames;
   }
 
   return (
-    <div className={getClassNames()} onClick={props.onClick}>
-      <div className="background" />
-      {getLoadingComponent()}
-      {getVideoComponent()}
-      {getAudioComponent()}
-    </div>
+    <li>
+      <div className={getClassNames()} onClick={props.onClick}>
+        <div className="background" />
+        {getLoadingComponent()}
+        {getVideoComponent()}
+        {getAudioComponent()}
+      </div>
+      <div className="space-y-2">
+        <div className="mt-3 text-xs font-medium lg:text-sm">
+          <h3>{props.userName}</h3>
+        </div>
+      </div>
+    </li>
   );
 }

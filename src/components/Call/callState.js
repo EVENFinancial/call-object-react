@@ -91,6 +91,7 @@ function getCallItems(participants, prevCallItems) {
       isLoading: !hasLoaded && missingTracks,
       audioTrack: participant.audioTrack,
       videoTrack: participant.videoTrack,
+      userName: participant.user_name,
     };
     if (participant.screenVideoTrack || participant.screenAudioTrack) {
       callItems[id + '-screen'] = {
@@ -138,10 +139,8 @@ function getMessage(callState) {
     isError = true;
   } else if (shouldShowClickAllow()) {
     header = 'Click "Allow" to enable camera and mic access';
-  } else if (Object.keys(callState.callItems).length === 1) {
-    header = "Copy and share this page's URL to invite others";
-    detail = window.location.href;
   }
+
   return header || detail ? { header, detail, isError } : null;
 }
 

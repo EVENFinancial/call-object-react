@@ -44,8 +44,9 @@ export default function Tray(props) {
   const [isCameraMuted, setCameraMuted] = useState(false);
   const [isMicMuted, setMicMuted] = useState(false);
   const [isSharingScreen, setSharingScreen] = useState(false);
-  const [displayChat, setChatDisplay] = useState(false);
+  const [displayChat, setChatDisplay] = useState(true);
   const [highlightedChat, setChatHighlight] = useState(false);
+  const [highlightedMusic, setMusicHighlight] = useState(props.musicMuted);
 
   function toggleCamera() {
     callObject.setLocalVideo(isCameraMuted);
@@ -54,6 +55,11 @@ export default function Tray(props) {
   function toggleMic() {
     callObject.setLocalAudio(isMicMuted);
   }
+
+  const toggleMusicMute = () => {
+    highlightedMusic ? props.player.unMute() : props.player.mute();
+    setMusicHighlight(!highlightedMusic);
+  };
 
   function toggleSharingScreen() {
     isSharingScreen
@@ -64,18 +70,6 @@ export default function Tray(props) {
   function leaveCall() {
     props.onClickLeaveCall && props.onClickLeaveCall();
   }
-
-  function toggleChat() {
-    setChatDisplay(!displayChat);
-    if (highlightedChat) {
-      setChatHighlight(!highlightedChat);
-    }
-  }
-
-  function handleNewChat() {
-    setChatHighlight(!highlightedChat);
-  }
-
   /**
    * Start listening for participant changes when callObject is set (i.e. when the component mounts).
    * This event will capture any changes to your audio/video mute state.
@@ -106,41 +100,37 @@ export default function Tray(props) {
   }, [callObject]);
 
   return (
-    <div className="tray">
-      <TrayButton
-        type={TYPE_MUTE_CAMERA}
-        disabled={props.disabled}
-        highlighted={isCameraMuted}
-        onClick={toggleCamera}
-      />
-      <TrayButton
-        type={TYPE_MUTE_MIC}
-        disabled={props.disabled}
-        highlighted={isMicMuted}
-        onClick={toggleMic}
-      />
-      {DailyIframe.supportedBrowser().supportsScreenShare && (
+    <div>
+      <div className="tray">
         <TrayButton
-          type={TYPE_SCREEN}
+          type={TYPE_MUTE_CAMERA}
           disabled={props.disabled}
-          highlighted={isSharingScreen}
-          onClick={toggleSharingScreen}
+          highlighted={isCameraMuted}
+          onClick={toggleCamera}
         />
-      )}
-      <TrayButton
-        type={TYPE_CHAT}
-        disabled={props.disabled}
-        highlighted={highlightedChat}
-        onClick={toggleChat}
-      />
-      <Chat onClickDisplay={displayChat} notification={handleNewChat} />
-      <TrayButton
-        type={TYPE_LEAVE}
-        disabled={props.disabled}
-        newButtonGroup={true}
-        highlighted={true}
-        onClick={leaveCall}
-      />
+        <TrayButton
+          type={TYPE_MUTE_MIC}
+          disabled={props.disabled}
+          highlighted={isMicMuted}
+          onClick={toggleMic}
+        />
+        {DailyIframe.supportedBrowser().supportsScreenShare && (
+          <TrayButton
+            type={TYPE_SCREEN}
+            disabled={props.disabled}
+            highlighted={isSharingScreen}
+            onClick={toggleSharingScreen}
+          />
+        )}
+        <button
+          disabled={props.disabled}
+          highlighted={setMusicHighlight}
+          onClick={toggleMusicMute}
+        >
+          {!highlightedMusic ? 'Mute Music' : 'Unmute Music'}
+        </button>
+      </div>
+      <Chat onClickDisplay={displayChat} />
     </div>
   );
 }

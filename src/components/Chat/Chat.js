@@ -1,11 +1,13 @@
 import React, { useContext, useState, useEffect } from 'react';
 import CallObjectContext from '../../CallObjectContext';
 import './Chat.css';
+import '../../index.css';
 
 export default function Chat(props) {
   const callObject = useContext(CallObjectContext);
   const [inputValue, setInputValue] = useState('');
   const [chatHistory, setChatHistory] = useState([]);
+  const [lastElement, setLastElement] = useState({});
 
   const handleChange = (event) => {
     setInputValue(event.target.value);
@@ -61,13 +63,21 @@ export default function Chat(props) {
 
   useEffect(() => {}, [chatHistory]);
 
-  return props.onClickDisplay ? (
-    <div className="chat">
-      {chatHistory.map((entry, index) => (
-        <div key={`entry-${index}`} className="messageList">
-          <b>{entry.sender}</b>: {entry.message}
-        </div>
-      ))}
+  return (
+    <div className="chat border border-dashed border-black">
+      <div className="messages">
+        {chatHistory.map((entry, index) => (
+          <div key={`entry-${index}`} className="messageList">
+            <b>{entry.sender}</b>: {entry.message}
+          </div>
+        ))}
+        <div
+          style={{ float: 'left', clear: 'both' }}
+          ref={(el) => {
+            setLastElement(el);
+          }}
+        ></div>
+      </div>
       <form onSubmit={handleSubmit}>
         <label htmlFor="chatInput"></label>
         <input
@@ -83,5 +93,5 @@ export default function Chat(props) {
         </button>
       </form>
     </div>
-  ) : null;
+  );
 }
