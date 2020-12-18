@@ -21,6 +21,7 @@ const MUSIC_ROOM = 'https://evenfinancial.daily.co/TU6dcaWq6huQeX7uXIy0';
 export default function App() {
   const [appState, setAppState] = useState(STATE_IDLE);
   const [player, setPlayer] = useState(null);
+  const [music, setMusic] = useState(true);
   const [roomUrl, setRoomUrl] = useState(null);
   const [callObject, setCallObject] = useState(null);
   /**
@@ -40,6 +41,7 @@ export default function App() {
 
   const onReady = (event) => {
     setPlayer(event.target);
+    event.target.setVolume(5);
   };
 
   /**
@@ -230,8 +232,9 @@ export default function App() {
         <CallObjectContext.Provider value={callObject}>
           <Call roomUrl={roomUrl} />
           <Tray
+            player={player}
+            musicMuted={false}
             disabled={!enableCallButtons}
-            onClickLeaveCall={startLeavingCall}
           />
         </CallObjectContext.Provider>
       ) : (

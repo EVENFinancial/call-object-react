@@ -46,6 +46,7 @@ export default function Tray(props) {
   const [isSharingScreen, setSharingScreen] = useState(false);
   const [displayChat, setChatDisplay] = useState(true);
   const [highlightedChat, setChatHighlight] = useState(false);
+  const [highlightedMusic, setMusicHighlight] = useState(props.musicMuted);
 
   function toggleCamera() {
     callObject.setLocalVideo(isCameraMuted);
@@ -54,6 +55,11 @@ export default function Tray(props) {
   function toggleMic() {
     callObject.setLocalAudio(isMicMuted);
   }
+
+  const toggleMusicMute = () => {
+    highlightedMusic ? props.player.unMute() : props.player.mute();
+    setMusicHighlight(!highlightedMusic);
+  };
 
   function toggleSharingScreen() {
     isSharingScreen
@@ -64,11 +70,6 @@ export default function Tray(props) {
   function leaveCall() {
     props.onClickLeaveCall && props.onClickLeaveCall();
   }
-
-  function handleNewChat() {
-    setChatHighlight(!highlightedChat);
-  }
-
   /**
    * Start listening for participant changes when callObject is set (i.e. when the component mounts).
    * This event will capture any changes to your audio/video mute state.
@@ -120,7 +121,14 @@ export default function Tray(props) {
           onClick={toggleSharingScreen}
         />
       )}
-      <Chat onClickDisplay={displayChat} notification={handleNewChat} />
+      <button
+        disabled={props.disabled}
+        highlighted={setMusicHighlight}
+        onClick={toggleMusicMute}
+      >
+        {!highlightedMusic ? 'Mute Music' : 'Unmute Music'}
+      </button>
+      <Chat onClickDisplay={displayChat} />
     </div>
   );
 }
