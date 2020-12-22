@@ -30,10 +30,6 @@ export default function Tile(props) {
       (audioEl.current.srcObject = new MediaStream([props.audioTrack]));
   }, [props.audioTrack]);
 
-  function getLoadingComponent() {
-    return props.isLoading && <p className="loading">Loading...</p>;
-  }
-
   function getVideoComponent() {
     return (
       props.videoTrack && (
@@ -57,7 +53,7 @@ export default function Tile(props) {
 
   function getClassNames() {
     let classNames =
-      'tile border-4 border-solid border-light-blue-500 bg-black rounded-full';
+      'tile border-4 border-solid h-20 w-full border-light-blue-500 bg-grey-400 rounded-full';
     classNames += props.isLarge ? ' large' : ' small';
     props.isLocalPerson && (classNames += ' local');
     return classNames;
@@ -67,7 +63,6 @@ export default function Tile(props) {
     <li>
       <div className={getClassNames()} onClick={props.onClick}>
         <div className="background" />
-        {getLoadingComponent()}
         {getVideoComponent()}
         {getAudioComponent()}
       </div>

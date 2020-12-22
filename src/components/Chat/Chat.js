@@ -67,7 +67,7 @@ export default function Chat(props) {
     <div className="chat border border-dashed border-black">
       <div className="messages">
         {chatHistory.map((entry, index) => (
-          <div key={`entry-${index}`} className="messageList">
+          <div key={`entry-${index}`} className="messageList break-words">
             <b>{entry.sender}</b>: {entry.message}
           </div>
         ))}
